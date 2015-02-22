@@ -32,32 +32,37 @@
         
         var left = new THREE.PlaneGeometry(depth, height, 4, 4);
         var leftMesh = new THREE.Mesh(left, boxMat);
-        leftMesh.rotation = new THREE.Euler(0, Math.PI/2, 0, 'XYZ');
-        leftMesh.position = new THREE.Vector3(-x, 0, 0);
+        leftMesh.rotation.y = Math.PI/2;
+        leftMesh.position.x = -x;
         
         var rightMesh = leftMesh.clone();
-        leftMesh.position = new THREE.Vector3(x, 0, 0);
+        leftMesh.position.x = x;
         
         var top = new THREE.PlaneGeometry(width, depth, 4, 4);
         var topMesh = new THREE.Mesh(top, boxMat);
-        topMesh.rotation = new THREE.Euler(Math.PI/2, 0, 0, 'XYZ');
-        topMesh.position = new THREE.Vector3(0, y, 0);
+        topMesh.rotation.x = Math.PI/2;
+        topMesh.position.y = y;
         
         var bottomMesh = topMesh.clone();
-        bottomMesh = new THREE.Vector3(0, -y, 0);
+        bottomMesh.position.y = -y;
         
+        var back = new THREE.PlaneGeometry(width, height, 4, 4);
+        var backMesh = new THREE.Mesh(back, boxMat);
+        backMesh.position.z = -z;
         
         boxObj.add(leftMesh);
         boxObj.add(rightMesh);
         boxObj.add(topMesh);
         boxObj.add(bottomMesh);
+        boxObj.add(backMesh);
         
         return boxObj;
     }
     
     /* Pitch Box */
     
-    scene.add(createBox(1, 1, 1));
+    boxGeom = createBox(2, 2, 2);
+    scene.add(boxGeom);
     
     /* Ball */
     var ballGeom = new THREE.SphereGeometry(0.1, 32, 32);
@@ -68,6 +73,8 @@
     
     function render() {
         requestAnimationFrame(render);
+        
+        //boxGeom.rotation.y += 0.1;
         renderer.render(scene, camera);
     }
     requestAnimationFrame(render);    
